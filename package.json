@@ -1,0 +1,16 @@
+{
+  "name": "unifiednun",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build && next export",
+    "start": "next start"
+  },
+  "dependencies": {
+    "gun": "^0.2020.1237",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  }
+}
