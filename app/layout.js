@@ -61,16 +61,43 @@ export default function RootLayout({ children }) {
   }
 
   // Risposta simulata
-  setTimeout(() => {
-    let aiReply = "";
-    if (userMessage.toLowerCase() === "/help") {
-      aiReply = "📜 Comandi disponibili: /mine, /launch, /dao, /clear, /help";
-    } else {
-      aiReply = "🤖 Ho ricevuto la tua richiesta. Presto potrò eseguire azioni reali per te.";
-    }
-    setMessages(prev => [...prev, { from: "ai", text: aiReply }]);
-  }, 800);
-};
+ setTimeout(() => {
+  let aiReply = { text: "", style: "", icon: "" };
+
+  switch (userMessage.toLowerCase()) {
+    case "/help":
+      aiReply = {
+        text: "📜 Comandi disponibili: /mine, /launch, /dao, /clear, /help",
+        style: "bg-purple-800 text-purple-200",
+        icon: "📜"
+      };
+      break;
+    case "/mine":
+      window.location.href = "/mining-docs";
+      return;
+    case "/launch":
+      window.location.href = "/launchpad-docs";
+      return;
+    case "/dao":
+      window.location.href = "/dao-docs";
+      return;
+    case "/clear":
+      setMessages([
+        { from: "ai", text: "🧹 Chat resettata. Scrivi /help per vedere i comandi disponibili.", style: "bg-gray-800 text-cyan-300", icon: "🧹" }
+      ]);
+      localStorage.removeItem("nunai-messages");
+      return;
+    default:
+      aiReply = {
+        text: "🤖 Ho ricevuto la tua richiesta. Presto potrò eseguire azioni reali per te.",
+        style: "bg-gray-800 text-cyan-300",
+        icon: "🤖"
+      };
+  }
+
+  setMessages(prev => [...prev, { from: "ai", ...aiReply }]);
+}, 800);
+
 
 
   return (
