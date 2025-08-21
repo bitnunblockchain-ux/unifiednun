@@ -12,93 +12,68 @@ export const metadata = {
 export default function RootLayout({ children }) {
   const [aiOpen, setAiOpen] = useState(false);
   const [messages, setMessages] = useState(() => {
-    // Recupera la chat dal localStorage se esiste
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("nunai-messages");
       return saved ? JSON.parse(saved) : [
-        { from: "ai", text: "👋 Ciao Simona, sono NUN AI. Scrivi /help per vedere i comandi disponibili." }
+        { from: "ai", text: "👋 Ciao Simona, sono NUN AI. Scrivi /help per vedere i comandi disponibili.", style: "bg-gray-800 text-cyan-300", icon: "🤖" }
       ];
     }
     return [];
   });
   const [input, setInput] = useState("");
 
-  // Salva la chat ogni volta che cambia
   useEffect(() => {
     if (typeof window !== "undefined") {
       localStorage.setItem("nunai-messages", JSON.stringify(messages));
     }
   }, [messages]);
 
+  const playSound = (file) => {
+    const audio = new Audio(file);
+    audio.volume = 0.4;
+    audio.play();
+  };
+
   const sendMessage = () => {
-  if (!input.trim()) return;
+    if (!input.trim()) return;
+    const userMessage = input.trim();
+    setMessages(prev => [...prev, { from: "user", text: userMessage }]);
+    setInput("");
+    playSound("/sound-command.mp3");
 
-  const userMessage = input.trim();
-  setMessages(prev => [...prev, { from: "user", text: userMessage }]);
-  setInput("");
-
-  // Comandi di navigazione
-  if (userMessage.toLowerCase() === "/mine") {
-    window.location.href = "/mining-docs";
-    return;
-  }
-  if (userMessage.toLowerCase() === "/launch") {
-    window.location.href = "/launchpad-docs";
-    return;
-  }
-  if (userMessage.toLowerCase() === "/dao") {
-    window.location.href = "/dao-docs";
-    return;
-  }
-
-  // Nuovo comando: reset chat
-  if (userMessage.toLowerCase() === "/clear") {
-    setMessages([
-      { from: "ai", text: "🧹 Chat resettata. Scrivi /help per vedere i comandi disponibili." }
-    ]);
-    localStorage.removeItem("nunai-messages");
-    return;
-  }
-
-  // Risposta simulata
- setTimeout(() => {
-  let aiReply = { text: "", style: "", icon: "" };
-
-  switch (userMessage.toLowerCase()) {
-    case "/help":
-      aiReply = {
-        text: "📜 Comandi disponibili: /mine, /launch, /dao, /clear, /help",
-        style: "bg-purple-800 text-purple-200",
-        icon: "📜"
-      };
-      break;
-    case "/mine":
+    // Navigation commands
+    if (userMessage.toLowerCase() === "/mine") {
       window.location.href = "/mining-docs";
       return;
-    case "/launch":
+    }
+    if (userMessage.toLowerCase() === "/launch") {
       window.location.href = "/launchpad-docs";
       return;
-    case "/dao":
+    }
+    if (userMessage.toLowerCase() === "/dao") {
       window.location.href = "/dao-docs";
       return;
-    case "/clear":
+    }
+    if (userMessage.toLowerCase() === "/clear") {
       setMessages([
         { from: "ai", text: "🧹 Chat resettata. Scrivi /help per vedere i comandi disponibili.", style: "bg-gray-800 text-cyan-300", icon: "🧹" }
       ]);
       localStorage.removeItem("nunai-messages");
       return;
-    default:
-      aiReply = {
-        text: "🤖 Ho ricevuto la tua richiesta. Presto potrò eseguire azioni reali per te.",
-        style: "bg-gray-800 text-cyan-300",
-        icon: "🤖"
-      };
-  }
+    }
 
-  setMessages(prev => [...prev, { from: "ai", ...aiReply }]);
-}, 800);
-
-
+    // AI replies
+    setTimeout(() => {
+      playSound("/sound-reply.mp3");
+      let aiReply = { text: "", style: "", icon: "" };
+      if (userMessage.toLowerCase() === "/help") {
+        aiReply = { text: "📜 Comandi disponibili: /mine, /launch, /dao, /clear, /help", style: "bg-purple-800 text-purple-200", icon: "📜" };
+      } else {
+        aiReply = { text: "🤖 Ho ricevuto la tua richiesta. Presto potrò eseguire azioni reali per te.", style: "bg-gray-800 text-cyan-300", icon: "🤖" };
+      }
+      setMessages(prev => [...prev, { from: "ai", ...aiReply }]);
+    }, 800);
+  };
 
   return (
     <html lang="en">
@@ -114,10 +89,10 @@ export default function RootLayout({ children }) {
           </nav>
         </header>
 
-        {/* Main Content */}
+        {/* Main */}
         <main className="flex-1 p-6">{children}</main>
 
-        {/* Floating NUN AI Button */}
+        {/* Floating AI Button */}
         <button
           className="fixed bottom-6 right-6 bg-cyan-500 text-black font-bold px-4 py-3 rounded-full shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 animate-fadeIn"
           onClick={() => setAiOpen(!aiOpen)}
@@ -125,7 +100,7 @@ export default function RootLayout({ children }) {
           🤖 NUN AI
         </button>
 
-        {/* NUN AI Panel */}
+        {/* AI Panel */}
         {aiOpen && (
           <div className="fixed bottom-20 right-6 w-80 h-96 bg-gray-900 border border-cyan-500 rounded-lg shadow-lg animate-slideUp flex flex-col">
             <div className="p-3 border-b border-cyan-500 flex justify-between items-center">
@@ -134,19 +109,19 @@ export default function RootLayout({ children }) {
             </div>
             <div className="flex-1 p-3 overflow-y-auto text-sm space-y-2">
               {messages.map((msg, i) => (
-  <div
-    key={i}
-    className={`p-2 rounded max-w-[90%] flex items-center gap-2 ${
-      msg.from === "ai"
-        ? msg.style || "bg-gray-800 text-cyan-300 self-start"
-        : "bg-cyan-500 text-black self-end ml-auto"
-    }`}
-  >
-    {msg.icon && <span>{msg.icon}</span>}
-    <span>{msg.text}</span>
-  </div>
-))}
-
+                <div
+                  key={i}
+                  className={`p-2 rounded max-w-[90%] flex items-center gap-2 pop-in ${
+                    msg.from === "ai"
+                      ? (msg.style || "bg-gray-800 text-cyan-300 self-start pulse-glow")
+                      : "bg-cyan-500 text-black self-end ml-auto"
+                  }`}
+                >
+                  {msg.icon && <span>{msg.icon}</span>}
+                  <span>{msg.text}</span>
+                </div>
+              ))}
+            </div>
             <div className="p-3 border-t border-cyan-500 flex space-x-2">
               <input
                 type="text"
