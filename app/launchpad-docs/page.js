@@ -1,8 +1,9 @@
 export default function LaunchpadDocsPage() {
   return (
-    <main className="p-10 text-white">
-      <h1 className="text-3xl font-bold mb-4">Launchpad Guide</h1>
-      <p>How to create and deploy tokens or NFTs using UnifiedNUN.</p>
+    <main className="p-10 text-white fade-in">
+      <h1 className="text-4xl font-bold neon">Launchpad Guide</h1>
+      <p className="text-gray-300 mt-4">Come creare e lanciare token o NFT su UnifiedNUN.</p>
     </main>
   );
 }
+
