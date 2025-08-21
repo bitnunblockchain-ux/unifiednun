@@ -23,6 +23,14 @@ export default function RootLayout({ children }) {
         {/* Main Content */}
         <main className="flex-1 p-6">{children}</main>
 
+        {/* Floating NUN AI Button */}
+        <button
+          className="fixed bottom-6 right-6 bg-cyan-500 text-black font-bold px-4 py-3 rounded-full shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 animate-fadeIn"
+          onClick={() => alert('NUN AI is waking up…')}
+        >
+          🤖 NUN AI
+        </button>
+
         {/* Footer */}
         <footer className="bg-black text-gray-400 py-10 px-6 text-sm border-t border-gray-800">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
@@ -43,4 +51,3 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
-
