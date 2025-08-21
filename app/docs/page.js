@@ -1,8 +1,8 @@
 export default function DocsPage() {
   return (
-    <main className="p-10 text-white">
-      <h1 className="text-3xl font-bold mb-4">UnifiedNUN Documentation</h1>
-      <p>Guides for mining, launching tokens, using NUN AI, and more.</p>
+    <main className="p-10 text-white fade-in">
+      <h1 className="text-4xl font-bold neon">UnifiedNUN Documentation</h1>
+      <p className="text-gray-300 mt-4">Guide per mining, launchpad, DAO e NUN AI.</p>
     </main>
   );
 }
