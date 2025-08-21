@@ -1,22 +1,20 @@
 export default function Home() {
   return (
     <main className="bg-black text-white font-sans">
-      {/* Hero Section */}
+      {/* Hero */}
       <section className="h-screen flex flex-col justify-center items-center text-center px-6 fade-in">
         <h1 className="text-5xl font-bold mb-4 neon">UnifiedNUN</h1>
         <p className="text-xl mb-6 fade-in">The Browser-Native Blockchain for Dreamers</p>
         <div className="space-x-4 fade-in">
-          <button className="bg-blue-600 px-6 py-2 rounded hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/50">
-            Start Mining
-          </button>
-          <button className="bg-purple-600 px-6 py-2 rounded hover:bg-purple-700 hover:shadow-lg hover:shadow-purple-500/50">
-            Launch Token
-          </button>
-          <button className="bg-gray-800 px-6 py-2 rounded hover:bg-gray-700 hover:shadow-lg hover:shadow-cyan-500/50">
-            Meet NUN AI
-          </button>
+          <a href="/mining-docs" className="bg-blue-600 px-6 py-2 rounded hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/50">Start Mining</a>
+          <a href="/launchpad-docs" className="bg-purple-600 px-6 py-2 rounded hover:bg-purple-700 hover:shadow-lg hover:shadow-purple-500/50">Launch Token</a>
+          <a href="/nun-ai" className="bg-gray-800 px-6 py-2 rounded hover:bg-gray-700 hover:shadow-lg hover:shadow-cyan-500/50">Meet NUN AI</a>
         </div>
       </section>
+    </main>
+  );
+}
+
 
       {/* How It Works */}
       <section className="py-20 px-6 text-center fade-in">
