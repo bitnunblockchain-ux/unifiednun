@@ -11,6 +11,24 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   const [aiOpen, setAiOpen] = useState(false);
+  const [messages, setMessages] = useState([
+    { from: "ai", text: "👋 Ciao Simona, sono NUN AI. Come posso aiutarti oggi?" }
+  ]);
+  const [input, setInput] = useState("");
+
+  const sendMessage = () => {
+    if (!input.trim()) return;
+    // Aggiungi il messaggio dell'utente
+    setMessages(prev => [...prev, { from: "user", text: input }]);
+    setInput("");
+    // Risposta finta dell'AI dopo 1 secondo
+    setTimeout(() => {
+      setMessages(prev => [
+        ...prev,
+        { from: "ai", text: "💡 Ho ricevuto la tua richiesta. Presto potrò eseguire azioni reali per te." }
+      ]);
+    }, 1000);
+  };
 
   return (
     <html lang="en">
@@ -45,15 +63,33 @@ export default function RootLayout({ children }) {
               <button onClick={() => setAiOpen(false)} className="text-gray-400 hover:text-white">✖</button>
             </div>
             <div className="flex-1 p-3 overflow-y-auto text-sm space-y-2">
-              <div className="text-gray-300">👋 Ciao Simona, sono pronta ad assisterti nella tua missione.</div>
-              <div className="text-gray-300">Puoi chiedermi di cercare dati, guidarti nei documenti o avviare processi.</div>
+              {messages.map((msg, i) => (
+                <div
+                  key={i}
+                  className={`p-2 rounded ${
+                    msg.from === "ai"
+                      ? "bg-gray-800 text-cyan-300 self-start"
+                      : "bg-cyan-500 text-black self-end"
+                  }`}
+                >
+                  {msg.text}
+                </div>
+              ))}
             </div>
-            <div className="p-3 border-t border-cyan-500">
+            <div className="p-3 border-t border-cyan-500 flex space-x-2">
               <input
                 type="text"
                 placeholder="Scrivi un messaggio..."
-                className="w-full p-2 rounded bg-black border border-gray-700 text-white text-sm focus:outline-none focus:border-cyan-500"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                className="flex-1 p-2 rounded bg-black border border-gray-700 text-white text-sm focus:outline-none focus:border-cyan-500"
               />
+              <button
+                onClick={sendMessage}
+                className="bg-cyan-500 text-black px-3 rounded hover:bg-cyan-400"
+              >
+                ➤
+              </button>
             </div>
           </div>
         )}
