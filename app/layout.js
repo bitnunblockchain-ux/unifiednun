@@ -134,18 +134,19 @@ export default function RootLayout({ children }) {
             </div>
             <div className="flex-1 p-3 overflow-y-auto text-sm space-y-2">
               {messages.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`p-2 rounded max-w-[90%] ${
-                    msg.from === "ai"
-                      ? "bg-gray-800 text-cyan-300 self-start"
-                      : "bg-cyan-500 text-black self-end ml-auto"
-                  }`}
-                >
-                  {msg.text}
-                </div>
-              ))}
-            </div>
+  <div
+    key={i}
+    className={`p-2 rounded max-w-[90%] flex items-center gap-2 ${
+      msg.from === "ai"
+        ? msg.style || "bg-gray-800 text-cyan-300 self-start"
+        : "bg-cyan-500 text-black self-end ml-auto"
+    }`}
+  >
+    {msg.icon && <span>{msg.icon}</span>}
+    <span>{msg.text}</span>
+  </div>
+))}
+
             <div className="p-3 border-t border-cyan-500 flex space-x-2">
               <input
                 type="text"
