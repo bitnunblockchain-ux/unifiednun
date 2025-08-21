@@ -12,23 +12,38 @@ export const metadata = {
 export default function RootLayout({ children }) {
   const [aiOpen, setAiOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { from: "ai", text: "👋 Ciao Simona, sono NUN AI. Come posso aiutarti oggi?" }
-  ]);
+  { from: "ai", text: "👋 Ciao Simona, sono NUN AI. Scrivi /help per vedere i comandi disponibili." }
+]);
+
   const [input, setInput] = useState("");
 
   const sendMessage = () => {
-    if (!input.trim()) return;
-    // Aggiungi il messaggio dell'utente
-    setMessages(prev => [...prev, { from: "user", text: input }]);
-    setInput("");
-    // Risposta finta dell'AI dopo 1 secondo
-    setTimeout(() => {
-      setMessages(prev => [
-        ...prev,
-        { from: "ai", text: "💡 Ho ricevuto la tua richiesta. Presto potrò eseguire azioni reali per te." }
-      ]);
-    }, 1000);
-  };
+  if (!input.trim()) return;
+
+  const userMessage = input.trim();
+  setMessages(prev => [...prev, { from: "user", text: userMessage }]);
+  setInput("");
+
+  // Risposta simulata in base al comando
+  setTimeout(() => {
+    let aiReply = "";
+
+    if (userMessage.toLowerCase() === "/mine") {
+      aiReply = "⛏️ Avvio del mining browser-native... blocchi in arrivo!";
+    } else if (userMessage.toLowerCase() === "/launch") {
+      aiReply = "🚀 Preparazione del Launchpad... token/NFT pronti al decollo.";
+    } else if (userMessage.toLowerCase() === "/dao") {
+      aiReply = "🏛️ Apertura pannello DAO... carico proposte e votazioni.";
+    } else if (userMessage.toLowerCase() === "/help") {
+      aiReply = "📜 Comandi disponibili: /mine, /launch, /dao, /help";
+    } else {
+      aiReply = "🤖 Ho ricevuto la tua richiesta. Presto potrò eseguire azioni reali per te.";
+    }
+
+    setMessages(prev => [...prev, { from: "ai", text: aiReply }]);
+  }, 800);
+};
+
 
   return (
     <html lang="en">
