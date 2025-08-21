@@ -82,29 +82,18 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-black text-gray-400 py-10 px-6 text-sm">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
-          {[
-            "Documentation",
-            "Whitepaper",
-            "NUN AI Overview",
-            "Launchpad Docs",
-            "Mining Guide",
-            "Marketplace Docs",
-            "DAO Docs",
-            "Console Access",
-            "Developer Portal",
-            "Contact",
-            "Socials",
-            "Legal"
-          ].map((link, i) => (
-            <a key={i} href={`/${link.toLowerCase().replace(/ /g, '-')}`} className="hover:text-white">
-              {link}
-            </a>
-          ))}
-        </div>
-        <p className="text-center">© UnifiedNUN 2025</p>
-      </footer>
-    </main>
-  );
-}
+    <footer className="bg-black text-gray-400 py-10 px-6 text-sm">
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
+    <a href="/whitepaper" className="hover:text-white">Whitepaper</a>
+    <a href="/docs" className="hover:text-white">Documentation</a>
+    <a href="/nun-ai" className="hover:text-white">NUN AI Assistant</a>
+    <a href="/launchpad-docs" className="hover:text-white">Launchpad Guide</a>
+    <a href="/mining-docs" className="hover:text-white">Mining Guide</a>
+    <a href="/market-docs" className="hover:text-white">Marketplace Guide</a>
+    <a href="/dao-docs" className="hover:text-white">DAO Governance</a>
+    <a href="/console-docs" className="hover:text-white">Founder Console</a>
+    <a href="/dev-portal" className="hover:text-white">Developer Portal</a>
+    <a href="/legal" className="hover:text-white">Legal & Privacy</a>
+  </div>
+  <p className="text-center">© UnifiedNUN 2025</p>
+</footer>
