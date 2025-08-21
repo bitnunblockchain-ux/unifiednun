@@ -31,37 +31,47 @@ export default function RootLayout({ children }) {
   }, [messages]);
 
   const sendMessage = () => {
-    if (!input.trim()) return;
+  if (!input.trim()) return;
 
-    const userMessage = input.trim();
-    setMessages(prev => [...prev, { from: "user", text: userMessage }]);
-    setInput("");
+  const userMessage = input.trim();
+  setMessages(prev => [...prev, { from: "user", text: userMessage }]);
+  setInput("");
 
-    // Comandi che navigano
-    if (userMessage.toLowerCase() === "/mine") {
-      window.location.href = "/mining-docs";
-      return;
-    }
-    if (userMessage.toLowerCase() === "/launch") {
-      window.location.href = "/launchpad-docs";
-      return;
-    }
-    if (userMessage.toLowerCase() === "/dao") {
-      window.location.href = "/dao-docs";
-      return;
-    }
+  // Comandi di navigazione
+  if (userMessage.toLowerCase() === "/mine") {
+    window.location.href = "/mining-docs";
+    return;
+  }
+  if (userMessage.toLowerCase() === "/launch") {
+    window.location.href = "/launchpad-docs";
+    return;
+  }
+  if (userMessage.toLowerCase() === "/dao") {
+    window.location.href = "/dao-docs";
+    return;
+  }
 
-    // Risposta simulata
-    setTimeout(() => {
-      let aiReply = "";
-      if (userMessage.toLowerCase() === "/help") {
-        aiReply = "📜 Comandi disponibili: /mine, /launch, /dao, /help";
-      } else {
-        aiReply = "🤖 Ho ricevuto la tua richiesta. Presto potrò eseguire azioni reali per te.";
-      }
-      setMessages(prev => [...prev, { from: "ai", text: aiReply }]);
-    }, 800);
-  };
+  // Nuovo comando: reset chat
+  if (userMessage.toLowerCase() === "/clear") {
+    setMessages([
+      { from: "ai", text: "🧹 Chat resettata. Scrivi /help per vedere i comandi disponibili." }
+    ]);
+    localStorage.removeItem("nunai-messages");
+    return;
+  }
+
+  // Risposta simulata
+  setTimeout(() => {
+    let aiReply = "";
+    if (userMessage.toLowerCase() === "/help") {
+      aiReply = "📜 Comandi disponibili: /mine, /launch, /dao, /clear, /help";
+    } else {
+      aiReply = "🤖 Ho ricevuto la tua richiesta. Presto potrò eseguire azioni reali per te.";
+    }
+    setMessages(prev => [...prev, { from: "ai", text: aiReply }]);
+  }, 800);
+};
+
 
   return (
     <html lang="en">
