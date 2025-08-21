@@ -1,7 +1,7 @@
 import './globals.css';
 
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import './globals.css';
 
 export const metadata = {
@@ -11,47 +11,57 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   const [aiOpen, setAiOpen] = useState(false);
-  const [messages, setMessages] = useState([
-  { from: "ai", text: "👋 Ciao Simona, sono NUN AI. Scrivi /help per vedere i comandi disponibili." }
-]);
-
+  const [messages, setMessages] = useState(() => {
+    // Recupera la chat dal localStorage se esiste
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("nunai-messages");
+      return saved ? JSON.parse(saved) : [
+        { from: "ai", text: "👋 Ciao Simona, sono NUN AI. Scrivi /help per vedere i comandi disponibili." }
+      ];
+    }
+    return [];
+  });
   const [input, setInput] = useState("");
 
+  // Salva la chat ogni volta che cambia
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("nunai-messages", JSON.stringify(messages));
+    }
+  }, [messages]);
+
   const sendMessage = () => {
-  if (!input.trim()) return;
+    if (!input.trim()) return;
 
-  const userMessage = input.trim();
-  setMessages(prev => [...prev, { from: "user", text: userMessage }]);
-  setInput("");
+    const userMessage = input.trim();
+    setMessages(prev => [...prev, { from: "user", text: userMessage }]);
+    setInput("");
 
-  // Comandi che navigano a pagine reali
-  if (userMessage.toLowerCase() === "/mine") {
-    window.location.href = "/mining-docs";
-    return;
-  }
-  if (userMessage.toLowerCase() === "/launch") {
-    window.location.href = "/launchpad-docs";
-    return;
-  }
-  if (userMessage.toLowerCase() === "/dao") {
-    window.location.href = "/dao-docs";
-    return;
-  }
-
-  // Risposta simulata
-  setTimeout(() => {
-    let aiReply = "";
-
-    if (userMessage.toLowerCase() === "/help") {
-      aiReply = "📜 Comandi disponibili: /mine, /launch, /dao, /help";
-    } else {
-      aiReply = "🤖 Ho ricevuto la tua richiesta. Presto potrò eseguire azioni reali per te.";
+    // Comandi che navigano
+    if (userMessage.toLowerCase() === "/mine") {
+      window.location.href = "/mining-docs";
+      return;
+    }
+    if (userMessage.toLowerCase() === "/launch") {
+      window.location.href = "/launchpad-docs";
+      return;
+    }
+    if (userMessage.toLowerCase() === "/dao") {
+      window.location.href = "/dao-docs";
+      return;
     }
 
-    setMessages(prev => [...prev, { from: "ai", text: aiReply }]);
-  }, 800);
-};
-
+    // Risposta simulata
+    setTimeout(() => {
+      let aiReply = "";
+      if (userMessage.toLowerCase() === "/help") {
+        aiReply = "📜 Comandi disponibili: /mine, /launch, /dao, /help";
+      } else {
+        aiReply = "🤖 Ho ricevuto la tua richiesta. Presto potrò eseguire azioni reali per te.";
+      }
+      setMessages(prev => [...prev, { from: "ai", text: aiReply }]);
+    }, 800);
+  };
 
   return (
     <html lang="en">
@@ -89,10 +99,10 @@ export default function RootLayout({ children }) {
               {messages.map((msg, i) => (
                 <div
                   key={i}
-                  className={`p-2 rounded ${
+                  className={`p-2 rounded max-w-[90%] ${
                     msg.from === "ai"
                       ? "bg-gray-800 text-cyan-300 self-start"
-                      : "bg-cyan-500 text-black self-end"
+                      : "bg-cyan-500 text-black self-end ml-auto"
                   }`}
                 >
                   {msg.text}
