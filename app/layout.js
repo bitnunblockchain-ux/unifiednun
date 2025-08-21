@@ -24,17 +24,25 @@ export default function RootLayout({ children }) {
   setMessages(prev => [...prev, { from: "user", text: userMessage }]);
   setInput("");
 
-  // Risposta simulata in base al comando
+  // Comandi che navigano a pagine reali
+  if (userMessage.toLowerCase() === "/mine") {
+    window.location.href = "/mining-docs";
+    return;
+  }
+  if (userMessage.toLowerCase() === "/launch") {
+    window.location.href = "/launchpad-docs";
+    return;
+  }
+  if (userMessage.toLowerCase() === "/dao") {
+    window.location.href = "/dao-docs";
+    return;
+  }
+
+  // Risposta simulata
   setTimeout(() => {
     let aiReply = "";
 
-    if (userMessage.toLowerCase() === "/mine") {
-      aiReply = "⛏️ Avvio del mining browser-native... blocchi in arrivo!";
-    } else if (userMessage.toLowerCase() === "/launch") {
-      aiReply = "🚀 Preparazione del Launchpad... token/NFT pronti al decollo.";
-    } else if (userMessage.toLowerCase() === "/dao") {
-      aiReply = "🏛️ Apertura pannello DAO... carico proposte e votazioni.";
-    } else if (userMessage.toLowerCase() === "/help") {
+    if (userMessage.toLowerCase() === "/help") {
       aiReply = "📜 Comandi disponibili: /mine, /launch, /dao, /help";
     } else {
       aiReply = "🤖 Ho ricevuto la tua richiesta. Presto potrò eseguire azioni reali per te.";
